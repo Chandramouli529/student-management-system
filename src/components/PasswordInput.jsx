@@ -3,7 +3,6 @@ import styles from "../styles/PasswordInput.module.css";
 
 export default function PasswordInput({ value, onChange, placeholder, autoComplete, id, className }) {
   const [visible, setVisible] = useState(false);
-
   return (
     <div className={`${styles.wrapper} ${className || ""}`}>
       <input
