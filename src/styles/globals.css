@@ -1,3 +1,4 @@
+@import "./variables.css";
 
 /* layout-fix v3 — sidebar is fixed/collapsible, app-main offsets by the
    collapsed rail width and hides that offset below 900px. If content still
