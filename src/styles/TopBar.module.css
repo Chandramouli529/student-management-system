@@ -1,0 +1,104 @@
+.accountBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.accountInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.accountAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.accountGreeting {
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+.accountGreeting strong {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+.roleBadge {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.roleTeacher {
+  background: var(--color-blue-50);
+  color: var(--color-blue-900);
+}
+
+.roleStudent {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.roleAdmin {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-8) var(--space-5);
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: 4px;
+  font-size: 0.88rem;
+  color: var(--color-muted);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (max-width: 640px) {
+  .accountBar {
+    padding: var(--space-3) var(--space-4);
+  }
+  .accountGreeting {
+    font-size: 0.78rem;
+  }
+  .topbar {
+    padding: var(--space-5) var(--space-4) var(--space-3);
+  }
+}

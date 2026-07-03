@@ -1,0 +1,232 @@
+.page {
+  min-height: 100vh;
+}
+
+.hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 52%;
+  background: var(--gradient-primary);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: var(--space-9);
+}
+
+.gridOverlay {
+  position: absolute;
+  inset: -60px;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.logoMark {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.logoWord {
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.heroTitle {
+  color: var(--color-white);
+  font-size: 2.6rem;
+  line-height: 1.15;
+  font-weight: 700;
+  margin-bottom: var(--space-5);
+}
+
+.heroBody {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  max-width: 400px;
+  margin-bottom: var(--space-8);
+}
+
+.heroStats {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.heroStatValue {
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.heroStatLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+
+.formSide {
+  margin-left: 52%;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-9) var(--space-8);
+  background: var(--color-bg);
+}
+
+.panel {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-md);
+}
+
+.panelEyebrow {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-blue-700);
+  font-weight: 700;
+}
+
+.panelTitle {
+  font-size: 1.5rem;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.roleToggle {
+  display: flex;
+  background: var(--color-blue-50);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: var(--space-6);
+}
+
+.roleBtn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-blue-900);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.roleBtnActive {
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.fieldLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  margin-top: var(--space-4);
+}
+
+.input {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border-strong);
+  font-size: 0.9rem;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-blue-500);
+  box-shadow: 0 0 0 4px var(--color-blue-50);
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: 0.8rem;
+  margin-top: var(--space-2);
+}
+
+.successBanner {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-5);
+  line-height: 1.5;
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: var(--space-6);
+}
+
+.hint {
+  font-size: 0.76rem;
+  color: var(--color-muted);
+  margin-top: var(--space-4);
+  text-align: center;
+}
+
+.switchLine {
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: var(--space-5);
+  color: var(--color-ink-soft);
+}
+
+.link {
+  color: var(--color-blue-700);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    display: none;
+  }
+  .formSide {
+    margin-left: 0;
+    max-height: none;
+  }
+}

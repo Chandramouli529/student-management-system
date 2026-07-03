@@ -1,0 +1,511 @@
+import { createContext, useContext, useState, useCallback, useMemo } from "react";
+
+// ---------------------------------------------------------------------
+// Single source of truth for ALL app data — branches, classes, subjects,
+// teachers, students, attendance, marks, certificates, notifications, and
+// the class schedule. Everything lives in localStorage under one key.
+// There is no separate static mock-data file: the first time the app runs
+// (localStorage empty) it seeds itself with a starter catalog so the UI
+// isn't blank, and from then on every read/write goes through here.
+// ---------------------------------------------------------------------
+
+const DirectoryContext = createContext(null);
+const STORAGE_KEY = "bp_data_v1";
+
+function seedBranches() {
+  return [
+    { id: "br-1", name: "B.Tech – Computer Science & Engineering", code: "CSE" },
+    { id: "br-2", name: "B.Tech – Electrical & Electronics Engineering", code: "EEE" },
+    { id: "br-3", name: "B.Tech – Information Technology", code: "IT" },
+    { id: "br-4", name: "B.Tech – Electronics & Communication Engineering", code: "ECE" },
+    { id: "br-5", name: "B.Tech – Mechanical Engineering", code: "ME" },
+    { id: "br-6", name: "B.Tech – Civil Engineering", code: "CE" },
+  ];
+}
+
+function seedClasses() {
+  return [
+    { id: "cl-7", branchId: "br-1", name: "CSE - Year 1" },
+    { id: "cl-1", branchId: "br-1", name: "CSE - Year 2" },
+    { id: "cl-8", branchId: "br-1", name: "CSE - Year 3" },
+    { id: "cl-9", branchId: "br-1", name: "CSE - Year 4" },
+    { id: "cl-2", branchId: "br-2", name: "EEE - Year 1" },
+    { id: "cl-22", branchId: "br-2", name: "EEE - Year 2" },
+    { id: "cl-23", branchId: "br-2", name: "EEE - Year 3" },
+    { id: "cl-24", branchId: "br-2", name: "EEE - Year 4" },
+    { id: "cl-10", branchId: "br-3", name: "IT - Year 1" },
+    { id: "cl-3", branchId: "br-3", name: "IT - Year 2" },
+    { id: "cl-11", branchId: "br-3", name: "IT - Year 3" },
+    { id: "cl-12", branchId: "br-3", name: "IT - Year 4" },
+    { id: "cl-13", branchId: "br-4", name: "ECE - Year 1" },
+    { id: "cl-4", branchId: "br-4", name: "ECE - Year 2" },
+    { id: "cl-14", branchId: "br-4", name: "ECE - Year 3" },
+    { id: "cl-15", branchId: "br-4", name: "ECE - Year 4" },
+    { id: "cl-16", branchId: "br-5", name: "Mech - Year 1" },
+    { id: "cl-5", branchId: "br-5", name: "Mech - Year 2" },
+    { id: "cl-17", branchId: "br-5", name: "Mech - Year 3" },
+    { id: "cl-18", branchId: "br-5", name: "Mech - Year 4" },
+    { id: "cl-19", branchId: "br-6", name: "Civil - Year 1" },
+    { id: "cl-6", branchId: "br-6", name: "Civil - Year 2" },
+    { id: "cl-20", branchId: "br-6", name: "Civil - Year 3" },
+    { id: "cl-21", branchId: "br-6", name: "Civil - Year 4" },
+  ];
+}
+
+function seedTeachers() {
+  return [];
+}
+
+function seedSubjects() {
+  return [
+    { id: "sub-1", name: "Data Structures", classId: "cl-1", teacherId: null, credits: 4 },
+    { id: "sub-2", name: "Operating Systems", classId: "cl-1", teacherId: null, credits: 4 },
+    { id: "sub-3", name: "Discrete Mathematics", classId: "cl-1", teacherId: null, credits: 3 },
+    { id: "sub-14", name: "Computer Networks", classId: "cl-1", teacherId: null, credits: 3 },
+    { id: "sub-15", name: "Object Oriented Programming", classId: "cl-1", teacherId: null, credits: 4 },
+    { id: "sub-4", name: "Electrical Circuit Theory", classId: "cl-22", teacherId: null, credits: 4 },
+    { id: "sub-5", name: "Electrical Machines", classId: "cl-22", teacherId: null, credits: 3 },
+    { id: "sub-16", name: "Power Systems", classId: "cl-22", teacherId: null, credits: 3 },
+    { id: "sub-17", name: "Power Electronics", classId: "cl-22", teacherId: null, credits: 3 },
+    { id: "sub-6", name: "Database Management Systems", classId: "cl-3", teacherId: null, credits: 4 },
+    { id: "sub-7", name: "Web Technologies", classId: "cl-3", teacherId: null, credits: 3 },
+    { id: "sub-18", name: "Software Engineering", classId: "cl-3", teacherId: null, credits: 3 },
+    { id: "sub-19", name: "Cloud Computing", classId: "cl-3", teacherId: null, credits: 3 },
+    { id: "sub-8", name: "Digital Electronics", classId: "cl-4", teacherId: null, credits: 4 },
+    { id: "sub-9", name: "Signals & Systems", classId: "cl-4", teacherId: null, credits: 3 },
+    { id: "sub-20", name: "Microprocessors & Microcontrollers", classId: "cl-4", teacherId: null, credits: 4 },
+    { id: "sub-21", name: "Control Systems", classId: "cl-4", teacherId: null, credits: 3 },
+    { id: "sub-10", name: "Thermodynamics", classId: "cl-5", teacherId: null, credits: 4 },
+    { id: "sub-11", name: "Engineering Mechanics", classId: "cl-5", teacherId: null, credits: 3 },
+    { id: "sub-22", name: "Fluid Mechanics", classId: "cl-5", teacherId: null, credits: 3 },
+    { id: "sub-23", name: "Manufacturing Processes", classId: "cl-5", teacherId: null, credits: 3 },
+    { id: "sub-12", name: "Structural Analysis", classId: "cl-6", teacherId: null, credits: 4 },
+    { id: "sub-13", name: "Surveying", classId: "cl-6", teacherId: null, credits: 3 },
+    { id: "sub-24", name: "Geotechnical Engineering", classId: "cl-6", teacherId: null, credits: 3 },
+    { id: "sub-25", name: "Environmental Engineering", classId: "cl-6", teacherId: null, credits: 3 },
+  ];
+}
+
+function seedStudents() {
+  return [];
+}
+
+const STATUS_CYCLE = ["Present", "Present", "Present", "Late", "Present", "Absent", "Present", "Excused", "Present", "Present"];
+
+function seedAttendance(students, subjects) {
+  const records = [];
+  const today = new Date();
+  students.forEach((student) => {
+    const subjectIds = subjects.filter((s) => s.classId === student.classId).map((s) => s.id);
+    for (let d = 29; d >= 0; d--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - d);
+      const day = date.getDay();
+      if (day === 0 || day === 6) continue;
+      subjectIds.forEach((subjectId, idx) => {
+        const seed = (student.id.charCodeAt(2) + d + idx) % STATUS_CYCLE.length;
+        records.push({
+          id: `att-${student.id}-${subjectId}-${date.toISOString().slice(0, 10)}`,
+          studentId: student.id,
+          subjectId,
+          date: date.toISOString().slice(0, 10),
+          status: STATUS_CYCLE[seed],
+        });
+      });
+    }
+  });
+  return records;
+}
+
+function seededScore(seed, base, spread) {
+  const x = Math.sin(seed) * 10000;
+  const frac = x - Math.floor(x);
+  return Math.round(base + frac * spread);
+}
+
+function seedMarks(students, subjects) {
+  const assessments = ["Unit Test 1", "Unit Test 2", "Mid Term", "Final Exam"];
+  const records = [];
+  students.forEach((student, sIdx) => {
+    const subjectIds = subjects.filter((s) => s.classId === student.classId).map((s) => s.id);
+    subjectIds.forEach((subjectId, subIdx) => {
+      assessments.forEach((assessment, aIdx) => {
+        const seed = sIdx * 17 + subIdx * 7 + aIdx * 3 + 1;
+        const score = seededScore(seed, 62, 35);
+        records.push({
+          id: `mk-${student.id}-${subjectId}-${aIdx}`,
+          studentId: student.id,
+          subjectId,
+          assessment,
+          score: Math.min(100, Math.max(38, score)),
+          maxScore: 100,
+        });
+      });
+    });
+  });
+  return records;
+}
+
+function seedCertificates() {
+  return [];
+}
+
+function seedNotifications() {
+  return {
+    teacher: [],
+    student: [],
+    admin: [],
+  };
+}
+
+function seedAll() {
+  const students = seedStudents();
+  const subjects = seedSubjects();
+  return {
+    branches: seedBranches(),
+    classes: seedClasses(),
+    teachers: seedTeachers(),
+    subjects,
+    students,
+    attendanceRecords: seedAttendance(students, subjects),
+    marksRecords: seedMarks(students, subjects),
+    certificateTypes: ["Bonafide", "Merit", "Completion", "Transfer"],
+    certificates: seedCertificates(),
+    notifications: seedNotifications(),
+    schedule: [],
+    exams: [],
+  };
+}
+
+// Default value for any key that might be missing from an older saved
+// snapshot in localStorage (e.g. `exams` didn't exist before this was
+// added) — merged underneath whatever's actually stored, so existing
+// data is never lost and new fields never come back as `undefined`.
+function emptyDefaults() {
+  return {
+    branches: [],
+    classes: [],
+    teachers: [],
+    subjects: [],
+    students: [],
+    attendanceRecords: [],
+    marksRecords: [],
+    certificateTypes: ["Bonafide", "Merit", "Completion", "Transfer"],
+    certificates: [],
+    notifications: { teacher: [], student: [], admin: [] },
+    schedule: [],
+    exams: [],
+  };
+}
+
+function readData() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw) return { ...emptyDefaults(), ...JSON.parse(raw) };
+  } catch {
+    // fall through to reseed
+  }
+  const seeded = seedAll();
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+  } catch {
+    // localStorage unavailable — app still works for this tab's lifetime
+  }
+  return seeded;
+}
+
+export function scoreToGrade(score) {
+  if (score >= 90) return "A+";
+  if (score >= 80) return "A";
+  if (score >= 70) return "B+";
+  if (score >= 60) return "B";
+  if (score >= 50) return "C";
+  return "D";
+}
+
+export function DirectoryProvider({ children }) {
+  const [data, setData] = useState(readData);
+
+  const persist = useCallback((next) => {
+    setData(next);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      // ignore quota/availability errors — state still updates for this tab
+    }
+  }, []);
+
+  const addStudent = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `stu-${Date.now()}`,
+        name: details.name || "New Student",
+        rollNo: details.rollNo || `NEW-${Math.floor(Math.random() * 900 + 100)}`,
+        classId: details.classId,
+        branchId: details.branchId,
+        email: details.email || "",
+        phone: details.phone || "",
+        dob: details.dob || "",
+        address: details.address || "",
+        parent: details.parent || null,
+      };
+      persist({ ...data, students: [...data.students, record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const addTeacher = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `tch-${Date.now()}`,
+        name: details.name || "New Teacher",
+        email: details.email || "",
+        subjectIds: details.subjectIds || [],
+        department: details.department,
+        branchId: details.branchId,
+      };
+      persist({ ...data, teachers: [...data.teachers, record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateStudent = useCallback(
+    (id, patch) => {
+      const idx = data.students.findIndex((s) => s.id === id);
+      if (idx === -1) return null;
+      const current = data.students[idx];
+      const next = { ...current, ...patch, parent: { ...(current.parent || {}), ...(patch.parent || {}) } };
+      const nextStudents = [...data.students];
+      nextStudents[idx] = next;
+      persist({ ...data, students: nextStudents });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const updateTeacher = useCallback(
+    (id, patch) => {
+      const idx = data.teachers.findIndex((t) => t.id === id);
+      if (idx === -1) return null;
+      const next = { ...data.teachers[idx], ...patch };
+      const nextTeachers = [...data.teachers];
+      nextTeachers[idx] = next;
+      persist({ ...data, teachers: nextTeachers });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const removeStudent = useCallback((id) => persist({ ...data, students: data.students.filter((s) => s.id !== id) }), [data, persist]);
+  const removeTeacher = useCallback((id) => persist({ ...data, teachers: data.teachers.filter((t) => t.id !== id) }), [data, persist]);
+
+  const upsertAttendance = useCallback(
+    (studentId, subjectId, date, status) => {
+      const idx = data.attendanceRecords.findIndex((r) => r.studentId === studentId && r.subjectId === subjectId && r.date === date);
+      const nextRecords = [...data.attendanceRecords];
+      if (idx !== -1) nextRecords[idx] = { ...nextRecords[idx], status };
+      else nextRecords.push({ id: `att-${studentId}-${subjectId}-${date}`, studentId, subjectId, date, status });
+      persist({ ...data, attendanceRecords: nextRecords });
+    },
+    [data, persist]
+  );
+
+  const upsertMarks = useCallback(
+    (studentId, subjectId, assessment, score) => {
+      const idx = data.marksRecords.findIndex((r) => r.studentId === studentId && r.subjectId === subjectId && r.assessment === assessment);
+      const nextRecords = [...data.marksRecords];
+      if (idx !== -1) nextRecords[idx] = { ...nextRecords[idx], score };
+      else nextRecords.push({ id: `mk-${studentId}-${subjectId}-${assessment}`.replace(/\s+/g, "-"), studentId, subjectId, assessment, score, maxScore: 100 });
+      persist({ ...data, marksRecords: nextRecords });
+    },
+    [data, persist]
+  );
+
+  const addCertificate = useCallback(
+    (details) => {
+      const record = { id: `cert-${Date.now()}`, issuedOn: new Date().toISOString().slice(0, 10), ...details };
+      persist({ ...data, certificates: [record, ...data.certificates] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const assignSchedule = useCallback(
+    (entry) => {
+      const record = {
+        id: entry.id || `sch-${Date.now()}`,
+        classId: entry.classId,
+        subjectId: entry.subjectId,
+        teacherId: entry.teacherId,
+        day: entry.day,
+        startTime: entry.startTime,
+        endTime: entry.endTime,
+      };
+      persist({ ...data, schedule: [...(data.schedule || []), record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateSchedule = useCallback(
+    (patch) => {
+      const list = data.schedule || [];
+      const idx = list.findIndex((s) => s.id === patch.id);
+      if (idx === -1) return null;
+      const next = { ...list[idx], ...patch };
+      const nextSchedule = [...list];
+      nextSchedule[idx] = next;
+      persist({ ...data, schedule: nextSchedule });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const removeSchedule = useCallback((id) => persist({ ...data, schedule: (data.schedule || []).filter((s) => s.id !== id) }), [data, persist]);
+
+  const addExam = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `exam-${Date.now()}`,
+        name: details.name,
+        branchId: details.branchId,
+        date: details.date,
+        startTime: details.startTime,
+        endTime: details.endTime,
+      };
+      persist({ ...data, exams: [...(data.exams || []), record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateExam = useCallback(
+    (id, patch) => {
+      const list = data.exams || [];
+      const idx = list.findIndex((e) => e.id === id);
+      if (idx === -1) return null;
+      const next = { ...list[idx], ...patch };
+      const nextExams = [...list];
+      nextExams[idx] = next;
+      persist({ ...data, exams: nextExams });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const removeExam = useCallback((id) => persist({ ...data, exams: (data.exams || []).filter((e) => e.id !== id) }), [data, persist]);
+
+  // ---- Derived read helpers, bound to current state ----
+  const getSubjectsForClass = useCallback((classId) => data.subjects.filter((s) => s.classId === classId), [data.subjects]);
+  const getStudentAttendancePct = useCallback(
+    (studentId) => {
+      const recs = data.attendanceRecords.filter((r) => r.studentId === studentId);
+      if (recs.length === 0) return 0;
+      const present = recs.filter((r) => r.status === "Present" || r.status === "Late").length;
+      return Math.round((present / recs.length) * 100);
+    },
+    [data.attendanceRecords]
+  );
+  const getStudentAverage = useCallback(
+    (studentId) => {
+      const recs = data.marksRecords.filter((r) => r.studentId === studentId);
+      if (recs.length === 0) return 0;
+      const total = recs.reduce((sum, r) => sum + r.score, 0);
+      return Math.round(total / recs.length);
+    },
+    [data.marksRecords]
+  );
+  const getTeacherById = useCallback((id) => data.teachers.find((t) => t.id === id), [data.teachers]);
+  const getClassById = useCallback((id) => data.classes.find((c) => c.id === id), [data.classes]);
+  const getBranchById = useCallback((id) => data.branches.find((b) => b.id === id), [data.branches]);
+  const getSubjectById = useCallback((id) => data.subjects.find((s) => s.id === id), [data.subjects]);
+
+  const value = useMemo(
+    () => ({
+      ...data,
+      addStudent,
+      addTeacher,
+      updateStudent,
+      updateTeacher,
+      removeStudent,
+      removeTeacher,
+      upsertAttendance,
+      upsertMarks,
+      addCertificate,
+      assignSchedule,
+      updateSchedule,
+      removeSchedule,
+      addExam,
+      updateExam,
+      removeExam,
+      getSubjectsForClass,
+      getStudentAttendancePct,
+      getStudentAverage,
+      getTeacherById,
+      getClassById,
+      getBranchById,
+      getSubjectById,
+    }),
+    [
+      data,
+      addStudent,
+      addTeacher,
+      updateStudent,
+      updateTeacher,
+      removeStudent,
+      removeTeacher,
+      upsertAttendance,
+      upsertMarks,
+      addCertificate,
+      assignSchedule,
+      updateSchedule,
+      removeSchedule,
+      addExam,
+      updateExam,
+      removeExam,
+      getSubjectsForClass,
+      getStudentAttendancePct,
+      getStudentAverage,
+      getTeacherById,
+      getClassById,
+      getBranchById,
+      getSubjectById,
+    ]
+  );
+
+  return <DirectoryContext.Provider value={value}>{children}</DirectoryContext.Provider>;
+}
+
+export function useDirectory() {
+  const ctx = useContext(DirectoryContext);
+  if (!ctx) throw new Error("useDirectory must be used within a DirectoryProvider");
+  return ctx;
+}
+
+// Back-compat alias: everything now lives in one store, so "combined roster"
+// is just the store itself under the old field names some pages still use.
+export function useCombinedRoster() {
+  const dir = useDirectory();
+  return {
+    allStudents: dir.students,
+    allTeachers: dir.teachers,
+    allAttendance: dir.attendanceRecords,
+    allMarks: dir.marksRecords,
+  };
+}
+
+export function getAttendancePct(records, studentId) {
+  const recs = records.filter((r) => r.studentId === studentId);
+  if (recs.length === 0) return 0;
+  const present = recs.filter((r) => r.status === "Present" || r.status === "Late").length;
+  return Math.round((present / recs.length) * 100);
+}
+
+export function getAverageScore(records, studentId) {
+  const recs = records.filter((r) => r.studentId === studentId);
+  if (recs.length === 0) return 0;
+  const total = recs.reduce((sum, r) => sum + r.score, 0);
+  return Math.round(total / recs.length);
+}

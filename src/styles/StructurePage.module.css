@@ -1,0 +1,132 @@
+.branchCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.branchHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.branchBadge {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-primary);
+  color: var(--color-white);
+}
+
+.classGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+.classCard {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.className {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  margin-bottom: var(--space-3);
+}
+
+.subjectList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.subjectRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  padding: 8px 10px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.subjectName {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.subjectTeacher {
+  color: var(--color-muted);
+}
+
+.noSubjects {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  font-style: italic;
+  padding: 6px 2px;
+}
+
+.branchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.classTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.editBtn,
+.smallEditBtn,
+.subjectEditBtn {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.editBtn {
+  padding: 10px 14px;
+  background: #2563eb;
+  color: #fff;
+}
+
+.smallEditBtn,
+.subjectEditBtn {
+  padding: 6px 10px;
+  background: #f59e0b;
+  color: #fff;
+}
+
+.editBtn:hover {
+  background: #1d4ed8;
+}
+
+.smallEditBtn:hover,
+.subjectEditBtn:hover {
+  background: #d97706;
+}
+
+.emptyState {
+  padding: 24px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+  font-weight: 700;
+  text-align: center;
+}

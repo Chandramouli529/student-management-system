@@ -1,0 +1,89 @@
+.wide {
+  max-width: 480px;
+  max-height: 86vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.wide::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wide::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.wide::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.wide::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+.helperNote {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.strengthWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: 8px;
+}
+
+.strengthTrack {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-blue-50);
+  overflow: hidden;
+}
+
+.strengthBar {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-pill);
+}
+
+.strength0,
+.strength1 {
+  background: var(--color-danger);
+}
+.strength2 {
+  background: var(--color-warning);
+}
+.strength3 {
+  background: var(--color-sky);
+}
+.strength4 {
+  background: var(--color-success);
+}
+
+.strengthLabel {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  white-space: nowrap;
+  min-width: 64px;
+  text-align: right;
+}
+
+.mismatch {
+  font-size: 0.76rem;
+  color: var(--color-danger);
+  margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+  .wide {
+    max-height: none;
+    overflow-y: visible;
+  }
+}

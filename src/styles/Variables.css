@@ -1,0 +1,78 @@
+:root {
+  /* ---- Core palette: white + blue ---- */
+  --color-white: #ffffff;
+  --color-bg: #f5f8fd;
+  --color-bg-soft: #eef3fc;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8fafd;
+
+  --color-ink: #0b1b33;
+  --color-ink-soft: #34455f;
+  --color-muted: #6b7c93;
+  --color-border: #dfe7f3;
+  --color-border-strong: #c6d4e8;
+
+  --color-blue-950: #071638;
+  --color-blue-900: #0b2f91;
+  --color-blue-700: #1652f0;
+  --color-blue-500: #3b82f6;
+  --color-blue-300: #7fb0fb;
+  --color-blue-100: #dbe9ff;
+  --color-blue-50: #eef4ff;
+
+  --color-sky: #38bdf8;
+  --color-success: #16a34a;
+  --color-success-bg: #e7f8ee;
+  --color-warning: #d97706;
+  --color-warning-bg: #fdf1de;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fdeaea;
+  --color-late: #7c3aed;
+  --color-late-bg: #f0e9fd;
+
+  /* ---- Gradients ---- */
+  --gradient-primary: linear-gradient(135deg, #0b2f91 0%, #1652f0 48%, #38bdf8 100%);
+  --gradient-primary-soft: linear-gradient(135deg, rgba(11, 47, 145, 0.08) 0%, rgba(56, 189, 248, 0.10) 100%);
+  --gradient-line: linear-gradient(90deg, #0b2f91, #1652f0, #38bdf8);
+  --gradient-surface: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+
+  /* ---- Typography ---- */
+  --font-display: "Sora", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* ---- Spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+
+  /* ---- Radii ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 2px 8px rgba(11, 27, 51, 0.05);
+  --shadow-md: 0 8px 24px rgba(11, 27, 51, 0.08);
+  --shadow-lg: 0 20px 48px rgba(11, 47, 145, 0.14);
+  --shadow-glow: 0 0 0 1px rgba(22, 82, 240, 0.08), 0 12px 32px rgba(22, 82, 240, 0.16);
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.2s;
+  --dur-med: 0.4s;
+
+  /* ---- Layout ---- */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 84px;
+  --topbar-height: 72px;
+}

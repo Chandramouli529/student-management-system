@@ -1,0 +1,210 @@
+.sidebar {
+  width: var(--sidebar-collapsed-width, 84px);
+  height: 100vh;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 40;
+  transition: box-shadow var(--dur-med) var(--ease-out);
+}
+
+.sidebarExpanded {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Labels are the bits of text that only make sense once the rail has
+   expanded (nav item text, logo wordmark, user name/role, sign-out label).
+   GSAP drives their opacity; this base rule just keeps them from wrapping
+   or reflowing awkwardly while collapsed. */
+[data-sidebar-label] {
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-1) var(--space-7);
+}
+
+.logoMark {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-glow);
+  flex-shrink: 0;
+}
+
+.logoText {
+  min-width: 0;
+}
+
+.logoTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.logoSub {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.nav {
+  flex: 1;
+}
+
+.navList {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--gradient-primary);
+  z-index: 0;
+  box-shadow: var(--shadow-glow);
+}
+
+.navItem {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 11px var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-ink-soft);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.navItem:hover {
+  color: var(--color-blue-900);
+}
+
+.navItemActive {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 19px;
+}
+
+.navLabel {
+  overflow: hidden;
+}
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-1);
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-blue-50);
+  color: var(--color-blue-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-display);
+  flex-shrink: 0;
+}
+
+.avatarAdmin {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-glow);
+}
+
+.userInfo {
+  min-width: 0;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--color-blue-50);
+  color: var(--color-blue-900);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 10px var(--space-3);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.logoutBtn:hover {
+  background: var(--color-blue-100);
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none !important;
+  }
+}
