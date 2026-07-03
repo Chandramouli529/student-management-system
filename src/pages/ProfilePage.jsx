@@ -23,15 +23,32 @@ function emptyParentForm(parent) {
   };
 }
 
+function emptyContactForm(u) {
+  return {
+    name: u?.name || "",
+    phone: u?.phone || "",
+    dob: u?.dob || "",
+    address: u?.address || "",
+  };
+}
+
 function StudentProfile() {
   const { user, updateProfile } = useAuth();
   const { getClassById, getBranchById, getStudentAttendancePct, getStudentAverage } = useDirectory();
   const cardRef = useRef(null);
+  const contactCardRef = useRef(null);
   const parentCardRef = useRef(null);
   const cls = getClassById(user?.classId);
   const branch = getBranchById(user?.branchId);
 
   const hasParentDetails = !!(user?.parent?.name && user?.parent?.phone);
+
+  // Contact/personal details editing — separate state from the parent
+  // details editor below, since they're two independent cards.
+  const [editingContact, setEditingContact] = useState(false);
+  const [contactForm, setContactForm] = useState(() => emptyContactForm(user));
+  const [contactError, setContactError] = useState("");
+  const [contactSaved, setContactSaved] = useState(false);
 
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState(() => emptyParentForm(user?.parent));
@@ -43,9 +60,54 @@ function StudentProfile() {
   }, []);
 
   useEffect(() => {
+    if (!contactCardRef.current) return;
+    gsap.fromTo(contactCardRef.current, { opacity: 0.5, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
+  }, [editingContact]);
+
+  useEffect(() => {
     if (!parentCardRef.current) return;
     gsap.fromTo(parentCardRef.current, { opacity: 0.5, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
   }, [editing]);
+
+  function startEditContact() {
+    setContactForm(emptyContactForm(user));
+    setContactError("");
+    setContactSaved(false);
+    setEditingContact(true);
+  }
+
+  function cancelEditContact() {
+    setContactError("");
+    setEditingContact(false);
+  }
+
+  function updateContact(field, value) {
+    setContactForm((prev) => ({ ...prev, [field]: value }));
+    if (contactError) setContactError("");
+  }
+
+  function handleSaveContact(e) {
+    e.preventDefault();
+    if (!contactForm.name.trim()) {
+      setContactError("Name is required.");
+      gsap.fromTo(contactCardRef.current, { x: -8 }, { x: 0, duration: 0.4, ease: "elastic.out(1, 0.4)" });
+      return;
+    }
+    if (contactForm.phone.trim() && !/^[+\d][\d\s-]{7,}$/.test(contactForm.phone.trim())) {
+      setContactError("Enter a valid phone number, or leave it blank.");
+      return;
+    }
+
+    updateProfile({
+      name: contactForm.name.trim(),
+      phone: contactForm.phone.trim(),
+      dob: contactForm.dob,
+      address: contactForm.address.trim(),
+    });
+    setEditingContact(false);
+    setContactSaved(true);
+    setTimeout(() => setContactSaved(false), 2500);
+  }
 
   function startEdit() {
     setForm(emptyParentForm(user?.parent));
@@ -114,12 +176,76 @@ function StudentProfile() {
         </div>
 
         <div className={pageStyles.splitGrid}>
-          <div className="card" style={{ padding: "24px" }}>
-            <p className={styles.cardTitle}>Contact & personal details</p>
-            <Row label="Email" value={user?.email} />
-            <Row label="Phone" value={user?.phone} />
-            <Row label="Date of birth" value={user?.dob} />
-            <Row label="Address" value={user?.address} />
+          <div className="card" style={{ padding: "24px" }} ref={contactCardRef}>
+            <div className={pageStyles.cardHeader}>
+              <p className={styles.cardTitle} style={{ margin: 0 }}>Contact & personal details</p>
+              {!editingContact && (
+                <button type="button" className="btn btn-ghost" onClick={startEditContact} style={{ padding: "6px 14px", fontSize: "0.78rem" }}>
+                  Edit
+                </button>
+              )}
+            </div>
+
+            {contactSaved && <p className={pageStyles.savedNote}>Saved — your details are up to date.</p>}
+
+            {editingContact ? (
+              <form onSubmit={handleSaveContact} className={pageStyles.form}>
+                <label className={pageStyles.fieldLabel} htmlFor="sp-name">Full name</label>
+                <input
+                  id="sp-name"
+                  className={pageStyles.input}
+                  value={contactForm.name}
+                  onChange={(e) => updateContact("name", e.target.value)}
+                  placeholder="Full name"
+                />
+
+                <label className={pageStyles.fieldLabel} htmlFor="sp-phone">Phone</label>
+                <input
+                  id="sp-phone"
+                  className={pageStyles.input}
+                  value={contactForm.phone}
+                  onChange={(e) => updateContact("phone", e.target.value)}
+                  placeholder="+91 90000 00000"
+                />
+
+                <label className={pageStyles.fieldLabel} htmlFor="sp-dob">Date of birth</label>
+                <input
+                  id="sp-dob"
+                  type="date"
+                  className={pageStyles.input}
+                  value={contactForm.dob}
+                  onChange={(e) => updateContact("dob", e.target.value)}
+                />
+
+                <label className={pageStyles.fieldLabel} htmlFor="sp-address">Address</label>
+                <input
+                  id="sp-address"
+                  className={pageStyles.input}
+                  value={contactForm.address}
+                  onChange={(e) => updateContact("address", e.target.value)}
+                  placeholder="Street, city"
+                />
+
+                {contactError && <p className={pageStyles.error}>{contactError}</p>}
+
+                <div className={pageStyles.formActions}>
+                  <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>
+                    Save changes
+                  </button>
+                  <button type="button" className="btn btn-outline" onClick={cancelEditContact}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <>
+                <Row label="Email" value={user?.email} />
+                <Row label="Phone" value={user?.phone} />
+                <Row label="Date of birth" value={user?.dob} />
+                <Row label="Address" value={user?.address} />
+                <p className={pageStyles.note}>Email is tied to your login and can't be changed here.</p>
+              </>
+            )}
           </div>
 
           <div className="card" style={{ padding: "24px" }} ref={parentCardRef}>
@@ -209,34 +335,24 @@ function StudentProfile() {
 
 function TeacherProfile() {
   const { user, updateProfile } = useAuth();
-  const { branches, subjects, getClassById, getBranchById } = useDirectory();
+  const { branches, subjects, classes, schedule, getClassById, getBranchById } = useDirectory();
   const cardRef = useRef(null);
   const detailsCardRef = useRef(null);
   const branch = getBranchById(user?.branchId);
   const teacherSubjects = subjects.filter((s) => (user?.subjectIds || []).includes(s.id));
+  const classCount = new Set(teacherSubjects.map((s) => s.classId)).size;
 
-  // Deduplicate the teacher's subjects down to the distinct classes they
-  // teach, along with how many subjects they take in each and which branch
-  // that class belongs to.
-  const teacherClasses = useMemo(() => {
-    const map = new Map();
-    teacherSubjects.forEach((s) => {
-      if (!map.has(s.classId)) {
-        const cls = getClassById(s.classId);
-        map.set(s.classId, {
-          id: s.classId,
-          name: cls?.name || "Unnamed class",
-          branchName: getBranchById(cls?.branchId)?.name,
-          subjectCount: 0,
-        });
-      }
-      map.get(s.classId).subjectCount += 1;
-    });
-    return Array.from(map.values());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [teacherSubjects]);
-
-  const classCount = teacherClasses.length;
+  const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const myScheduledClasses = useMemo(() => {
+    return schedule
+      .filter((entry) => entry.teacherId === user?.id)
+      .map((entry) => ({
+        ...entry,
+        className: classes.find((c) => c.id === entry.classId)?.name || "Unknown class",
+        subjectName: subjects.find((s) => s.id === entry.subjectId)?.name || "Unknown subject",
+      }))
+      .sort((a, b) => DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day) || (a.startTime || "").localeCompare(b.startTime || ""));
+  }, [schedule, classes, subjects, user?.id]);
 
   function emptyTeacherForm(u) {
     return {
@@ -400,20 +516,16 @@ function TeacherProfile() {
           </div>
         </div>
 
-        <div className="card" style={{ padding: "24px", marginTop: "24px" }}>
-          <p className={styles.cardTitle}>Classes you teach</p>
-          {teacherClasses.length === 0 ? (
+        <div className="card" style={{ padding: "24px", marginTop: "20px" }}>
+          <p className={styles.cardTitle}>Your classes</p>
+          {myScheduledClasses.length === 0 ? (
             <div className={pageStyles.emptyState}>
-              <p>No classes assigned yet.</p>
-              <p className={pageStyles.note}>Classes appear here once an administrator assigns you a subject.</p>
+              <p>No classes scheduled yet.</p>
+              <p className={pageStyles.note}>An admin schedules which classes you teach from the Classes page.</p>
             </div>
           ) : (
-            teacherClasses.map((c) => (
-              <Row
-                key={c.id}
-                label={c.name}
-                value={`${c.subjectCount} subject${c.subjectCount > 1 ? "s" : ""}${c.branchName ? ` · ${c.branchName}` : ""}`}
-              />
+            myScheduledClasses.map((cls) => (
+              <Row key={cls.id} label={`${cls.className} · ${cls.subjectName}`} value={`${cls.day} · ${cls.startTime}–${cls.endTime}`} />
             ))
           )}
         </div>

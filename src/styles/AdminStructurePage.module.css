@@ -1,0 +1,84 @@
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--color-blue-50);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.tab {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--color-blue-900);
+  transition: background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.tabActive {
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.input,
+.select {
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border-strong);
+  font-size: 0.87rem;
+  font-family: var(--font-body);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--color-blue-500);
+  box-shadow: 0 0 0 4px var(--color-blue-50);
+}
+
+.error {
+  font-size: 0.78rem;
+  color: var(--color-danger);
+  margin-top: -4px;
+}
+
+.rowActions {
+  display: flex;
+  gap: 8px;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}

@@ -58,31 +58,96 @@ function seedTeachers() {
 
 function seedSubjects() {
   return [
+    // ---- CSE: cl-7 (Y1), cl-1 (Y2), cl-8 (Y3), cl-9 (Y4) ----
+    { id: "sub-26", name: "Programming in C", classId: "cl-7", teacherId: null, credits: 4 },
+    { id: "sub-27", name: "Engineering Mathematics I", classId: "cl-7", teacherId: null, credits: 3 },
+    { id: "sub-28", name: "Engineering Physics", classId: "cl-7", teacherId: null, credits: 3 },
     { id: "sub-1", name: "Data Structures", classId: "cl-1", teacherId: null, credits: 4 },
     { id: "sub-2", name: "Operating Systems", classId: "cl-1", teacherId: null, credits: 4 },
     { id: "sub-3", name: "Discrete Mathematics", classId: "cl-1", teacherId: null, credits: 3 },
     { id: "sub-14", name: "Computer Networks", classId: "cl-1", teacherId: null, credits: 3 },
     { id: "sub-15", name: "Object Oriented Programming", classId: "cl-1", teacherId: null, credits: 4 },
+    { id: "sub-29", name: "Design and Analysis of Algorithms", classId: "cl-8", teacherId: null, credits: 4 },
+    { id: "sub-30", name: "Database Management Systems", classId: "cl-8", teacherId: null, credits: 4 },
+    { id: "sub-31", name: "Compiler Design", classId: "cl-8", teacherId: null, credits: 3 },
+    { id: "sub-32", name: "Machine Learning", classId: "cl-9", teacherId: null, credits: 4 },
+    { id: "sub-33", name: "Artificial Intelligence", classId: "cl-9", teacherId: null, credits: 3 },
+    { id: "sub-34", name: "Big Data Analytics", classId: "cl-9", teacherId: null, credits: 3 },
+
+    // ---- EEE: cl-2 (Y1), cl-22 (Y2), cl-23 (Y3), cl-24 (Y4) ----
+    { id: "sub-35", name: "Basic Electrical Engineering", classId: "cl-2", teacherId: null, credits: 4 },
+    { id: "sub-36", name: "Engineering Mathematics I", classId: "cl-2", teacherId: null, credits: 3 },
+    { id: "sub-37", name: "Engineering Physics", classId: "cl-2", teacherId: null, credits: 3 },
     { id: "sub-4", name: "Electrical Circuit Theory", classId: "cl-22", teacherId: null, credits: 4 },
     { id: "sub-5", name: "Electrical Machines", classId: "cl-22", teacherId: null, credits: 3 },
     { id: "sub-16", name: "Power Systems", classId: "cl-22", teacherId: null, credits: 3 },
     { id: "sub-17", name: "Power Electronics", classId: "cl-22", teacherId: null, credits: 3 },
+    { id: "sub-38", name: "Microprocessors and Microcontrollers", classId: "cl-23", teacherId: null, credits: 4 },
+    { id: "sub-39", name: "Control Systems Engineering", classId: "cl-23", teacherId: null, credits: 3 },
+    { id: "sub-40", name: "Electrical Measurements", classId: "cl-23", teacherId: null, credits: 3 },
+    { id: "sub-41", name: "Renewable Energy Systems", classId: "cl-24", teacherId: null, credits: 3 },
+    { id: "sub-42", name: "High Voltage Engineering", classId: "cl-24", teacherId: null, credits: 3 },
+    { id: "sub-43", name: "Electric Drives", classId: "cl-24", teacherId: null, credits: 3 },
+
+    // ---- IT: cl-10 (Y1), cl-3 (Y2), cl-11 (Y3), cl-12 (Y4) ----
+    { id: "sub-44", name: "Programming Fundamentals", classId: "cl-10", teacherId: null, credits: 4 },
+    { id: "sub-45", name: "Engineering Mathematics I", classId: "cl-10", teacherId: null, credits: 3 },
+    { id: "sub-46", name: "Digital Logic Design", classId: "cl-10", teacherId: null, credits: 3 },
     { id: "sub-6", name: "Database Management Systems", classId: "cl-3", teacherId: null, credits: 4 },
     { id: "sub-7", name: "Web Technologies", classId: "cl-3", teacherId: null, credits: 3 },
     { id: "sub-18", name: "Software Engineering", classId: "cl-3", teacherId: null, credits: 3 },
     { id: "sub-19", name: "Cloud Computing", classId: "cl-3", teacherId: null, credits: 3 },
+    { id: "sub-47", name: "Computer Networks", classId: "cl-11", teacherId: null, credits: 3 },
+    { id: "sub-48", name: "Operating Systems", classId: "cl-11", teacherId: null, credits: 4 },
+    { id: "sub-49", name: "Data Mining", classId: "cl-11", teacherId: null, credits: 3 },
+    { id: "sub-50", name: "Artificial Intelligence", classId: "cl-12", teacherId: null, credits: 3 },
+    { id: "sub-51", name: "Mobile Application Development", classId: "cl-12", teacherId: null, credits: 3 },
+    { id: "sub-52", name: "Information Security", classId: "cl-12", teacherId: null, credits: 3 },
+
+    // ---- ECE: cl-13 (Y1), cl-4 (Y2), cl-14 (Y3), cl-15 (Y4) ----
+    { id: "sub-53", name: "Basic Electronics", classId: "cl-13", teacherId: null, credits: 4 },
+    { id: "sub-54", name: "Engineering Mathematics I", classId: "cl-13", teacherId: null, credits: 3 },
+    { id: "sub-55", name: "Engineering Physics", classId: "cl-13", teacherId: null, credits: 3 },
     { id: "sub-8", name: "Digital Electronics", classId: "cl-4", teacherId: null, credits: 4 },
     { id: "sub-9", name: "Signals & Systems", classId: "cl-4", teacherId: null, credits: 3 },
     { id: "sub-20", name: "Microprocessors & Microcontrollers", classId: "cl-4", teacherId: null, credits: 4 },
     { id: "sub-21", name: "Control Systems", classId: "cl-4", teacherId: null, credits: 3 },
+    { id: "sub-56", name: "Analog Communication", classId: "cl-14", teacherId: null, credits: 3 },
+    { id: "sub-57", name: "VLSI Design", classId: "cl-14", teacherId: null, credits: 4 },
+    { id: "sub-58", name: "Embedded Systems", classId: "cl-14", teacherId: null, credits: 3 },
+    { id: "sub-59", name: "Digital Communication", classId: "cl-15", teacherId: null, credits: 3 },
+    { id: "sub-60", name: "Wireless Networks", classId: "cl-15", teacherId: null, credits: 3 },
+    { id: "sub-61", name: "Satellite Communication", classId: "cl-15", teacherId: null, credits: 3 },
+
+    // ---- Mechanical: cl-16 (Y1), cl-5 (Y2), cl-17 (Y3), cl-18 (Y4) ----
+    { id: "sub-62", name: "Engineering Mechanics I", classId: "cl-16", teacherId: null, credits: 4 },
+    { id: "sub-63", name: "Engineering Mathematics I", classId: "cl-16", teacherId: null, credits: 3 },
+    { id: "sub-64", name: "Engineering Graphics", classId: "cl-16", teacherId: null, credits: 3 },
     { id: "sub-10", name: "Thermodynamics", classId: "cl-5", teacherId: null, credits: 4 },
     { id: "sub-11", name: "Engineering Mechanics", classId: "cl-5", teacherId: null, credits: 3 },
     { id: "sub-22", name: "Fluid Mechanics", classId: "cl-5", teacherId: null, credits: 3 },
     { id: "sub-23", name: "Manufacturing Processes", classId: "cl-5", teacherId: null, credits: 3 },
+    { id: "sub-65", name: "Heat Transfer", classId: "cl-17", teacherId: null, credits: 4 },
+    { id: "sub-66", name: "Machine Design", classId: "cl-17", teacherId: null, credits: 4 },
+    { id: "sub-67", name: "Dynamics of Machinery", classId: "cl-17", teacherId: null, credits: 3 },
+    { id: "sub-68", name: "CAD/CAM", classId: "cl-18", teacherId: null, credits: 3 },
+    { id: "sub-69", name: "Automobile Engineering", classId: "cl-18", teacherId: null, credits: 3 },
+    { id: "sub-70", name: "Industrial Engineering", classId: "cl-18", teacherId: null, credits: 3 },
+
+    // ---- Civil: cl-19 (Y1), cl-6 (Y2), cl-20 (Y3), cl-21 (Y4) ----
+    { id: "sub-71", name: "Engineering Mechanics", classId: "cl-19", teacherId: null, credits: 4 },
+    { id: "sub-72", name: "Engineering Mathematics I", classId: "cl-19", teacherId: null, credits: 3 },
+    { id: "sub-73", name: "Building Materials", classId: "cl-19", teacherId: null, credits: 3 },
     { id: "sub-12", name: "Structural Analysis", classId: "cl-6", teacherId: null, credits: 4 },
     { id: "sub-13", name: "Surveying", classId: "cl-6", teacherId: null, credits: 3 },
     { id: "sub-24", name: "Geotechnical Engineering", classId: "cl-6", teacherId: null, credits: 3 },
     { id: "sub-25", name: "Environmental Engineering", classId: "cl-6", teacherId: null, credits: 3 },
+    { id: "sub-74", name: "Concrete Technology", classId: "cl-20", teacherId: null, credits: 4 },
+    { id: "sub-75", name: "Transportation Engineering", classId: "cl-20", teacherId: null, credits: 3 },
+    { id: "sub-76", name: "Water Resources Engineering", classId: "cl-20", teacherId: null, credits: 3 },
+    { id: "sub-77", name: "Estimation and Costing", classId: "cl-21", teacherId: null, credits: 3 },
+    { id: "sub-78", name: "Earthquake Engineering", classId: "cl-21", teacherId: null, credits: 3 },
+    { id: "sub-79", name: "Construction Management", classId: "cl-21", teacherId: null, credits: 3 },
   ];
 }
 
@@ -340,6 +405,7 @@ export function DirectoryProvider({ children }) {
         subjectId: entry.subjectId,
         teacherId: entry.teacherId,
         day: entry.day,
+        date: entry.date || "",
         startTime: entry.startTime,
         endTime: entry.endTime,
       };
@@ -397,6 +463,119 @@ export function DirectoryProvider({ children }) {
 
   const removeExam = useCallback((id) => persist({ ...data, exams: (data.exams || []).filter((e) => e.id !== id) }), [data, persist]);
 
+  // ---- Branches ----
+  const addBranch = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `br-${Date.now()}`,
+        name: details.name,
+        code: details.code || "",
+      };
+      persist({ ...data, branches: [...data.branches, record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateBranch = useCallback(
+    (id, patch) => {
+      const idx = data.branches.findIndex((b) => b.id === id);
+      if (idx === -1) return null;
+      const next = { ...data.branches[idx], ...patch };
+      const nextBranches = [...data.branches];
+      nextBranches[idx] = next;
+      persist({ ...data, branches: nextBranches });
+      return next;
+    },
+    [data, persist]
+  );
+
+  // Removing a branch cascades: its classes and subjects go too, since a
+  // class with no branch and a subject with no class are both dead weight
+  // that would otherwise linger in every dropdown across the app.
+  const removeBranch = useCallback(
+    (id) => {
+      const classIdsInBranch = new Set(data.classes.filter((c) => c.branchId === id).map((c) => c.id));
+      persist({
+        ...data,
+        branches: data.branches.filter((b) => b.id !== id),
+        classes: data.classes.filter((c) => c.branchId !== id),
+        subjects: data.subjects.filter((s) => !classIdsInBranch.has(s.classId)),
+      });
+    },
+    [data, persist]
+  );
+
+  // ---- Classes (years) ----
+  const addClass = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `cl-${Date.now()}`,
+        branchId: details.branchId,
+        name: details.name,
+      };
+      persist({ ...data, classes: [...data.classes, record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateClass = useCallback(
+    (id, patch) => {
+      const idx = data.classes.findIndex((c) => c.id === id);
+      if (idx === -1) return null;
+      const next = { ...data.classes[idx], ...patch };
+      const nextClasses = [...data.classes];
+      nextClasses[idx] = next;
+      persist({ ...data, classes: nextClasses });
+      return next;
+    },
+    [data, persist]
+  );
+
+  // Removing a class cascades to its subjects, same reasoning as removeBranch.
+  const removeClass = useCallback(
+    (id) => {
+      persist({
+        ...data,
+        classes: data.classes.filter((c) => c.id !== id),
+        subjects: data.subjects.filter((s) => s.classId !== id),
+      });
+    },
+    [data, persist]
+  );
+
+  // ---- Subjects ----
+  const addSubject = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `sub-${Date.now()}`,
+        name: details.name,
+        classId: details.classId,
+        teacherId: details.teacherId || null,
+        credits: details.credits || 3,
+      };
+      persist({ ...data, subjects: [...data.subjects, record] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateSubject = useCallback(
+    (id, patch) => {
+      const idx = data.subjects.findIndex((s) => s.id === id);
+      if (idx === -1) return null;
+      const next = { ...data.subjects[idx], ...patch };
+      const nextSubjects = [...data.subjects];
+      nextSubjects[idx] = next;
+      persist({ ...data, subjects: nextSubjects });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const removeSubject = useCallback((id) => persist({ ...data, subjects: data.subjects.filter((s) => s.id !== id) }), [data, persist]);
+
   // ---- Derived read helpers, bound to current state ----
   const getSubjectsForClass = useCallback((classId) => data.subjects.filter((s) => s.classId === classId), [data.subjects]);
   const getStudentAttendancePct = useCallback(
@@ -440,6 +619,15 @@ export function DirectoryProvider({ children }) {
       addExam,
       updateExam,
       removeExam,
+      addBranch,
+      updateBranch,
+      removeBranch,
+      addClass,
+      updateClass,
+      removeClass,
+      addSubject,
+      updateSubject,
+      removeSubject,
       getSubjectsForClass,
       getStudentAttendancePct,
       getStudentAverage,
@@ -465,6 +653,15 @@ export function DirectoryProvider({ children }) {
       addExam,
       updateExam,
       removeExam,
+      addBranch,
+      updateBranch,
+      removeBranch,
+      addClass,
+      updateClass,
+      removeClass,
+      addSubject,
+      updateSubject,
+      removeSubject,
       getSubjectsForClass,
       getStudentAttendancePct,
       getStudentAverage,

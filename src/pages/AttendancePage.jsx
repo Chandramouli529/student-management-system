@@ -20,7 +20,7 @@ export default function AttendancePage() {
 
 function TeacherAttendance() {
   const { user } = useAuth();
-  const { students, subjects, classes, branches, attendanceRecords, getSubjectById, upsertAttendance } = useDirectory();
+  const { students, subjects, classes, branches, attendanceRecords, upsertAttendance } = useDirectory();
 
   // A teacher only ever sees subjects (and therefore students) from their
   // own department. If they have explicit subjectIds assigned, use exactly
@@ -37,13 +37,35 @@ function TeacherAttendance() {
     return subjects.filter((s) => classes.find((c) => c.id === s.classId)?.branchId === user?.branchId);
   }, [subjects, classes, user?.subjectIds, user?.branchId]);
 
-  const [subjectId, setSubjectId] = useState(teacherSubjects[0]?.id);
+  // The branch-wise list of classes/years a teacher can browse — every
+  // class in their own department, not just the ones tied to a subject
+  // they already have assigned. Picking a class here narrows the subject
+  // dropdown below it, rather than the class being inferred purely from
+  // whichever subject happens to be selected first.
+  const departmentClasses = useMemo(
+    () => classes.filter((c) => c.branchId === user?.branchId),
+    [classes, user?.branchId]
+  );
+
+  const [classId, setClassId] = useState(() => teacherSubjects[0]?.classId || departmentClasses[0]?.id);
+
+  const subjectsForClass = useMemo(
+    () => teacherSubjects.filter((s) => s.classId === classId),
+    [teacherSubjects, classId]
+  );
+
+  const [subjectId, setSubjectId] = useState(subjectsForClass[0]?.id);
   const [date, setDate] = useState(todayStr());
 
-  const subject = getSubjectById(subjectId) || teacherSubjects.find((s) => s.id === subjectId);
+  function handleClassChange(nextClassId) {
+    setClassId(nextClassId);
+    const firstSubject = teacherSubjects.find((s) => s.classId === nextClassId);
+    setSubjectId(firstSubject?.id);
+  }
+
   const roster = useMemo(
-    () => students.filter((s) => s.classId === subject?.classId),
-    [students, subject?.classId]
+    () => students.filter((s) => s.classId === classId),
+    [students, classId]
   );
 
   const departmentName = branches.find((b) => b.id === user?.branchId)?.name;
@@ -78,8 +100,16 @@ function TeacherAttendance() {
         subtitle={departmentName ? `Mark attendance for ${departmentName} students — saved as you go.` : "Mark today's attendance per subject — saved as you go."}
         actions={
           <div className={styles.toolbar}>
-            <select className={styles.select} value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
-              {teacherSubjects.map((s) => (
+            <select className={styles.select} value={classId} onChange={(e) => handleClassChange(e.target.value)}>
+              {departmentClasses.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <select className={styles.select} value={subjectId} onChange={(e) => setSubjectId(e.target.value)} disabled={subjectsForClass.length === 0}>
+              {subjectsForClass.length === 0 && <option value="">No subjects for this class</option>}
+              {subjectsForClass.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
                 </option>
@@ -96,12 +126,18 @@ function TeacherAttendance() {
           <span><i className={`${pageStyles.dot} ${pageStyles.l}`} /> Late</span>
           <span><i className={`${pageStyles.dot} ${pageStyles.e}`} /> Excused</span>
         </div>
-        <AttendanceGrid
-          students={roster}
-          valueFor={valueFor}
-          onChange={handleChange}
-          emptyLabel="No students are enrolled in this class yet."
-        />
+        {subjectsForClass.length === 0 ? (
+          <div className="card" style={{ padding: "32px", textAlign: "center", color: "var(--color-muted)" }}>
+            You don't teach any subject in this class yet — pick a different class, or ask an admin to assign one here.
+          </div>
+        ) : (
+          <AttendanceGrid
+            students={roster}
+            valueFor={valueFor}
+            onChange={handleChange}
+            emptyLabel="No students are enrolled in this class yet."
+          />
+        )}
       </div>
     </div>
   );

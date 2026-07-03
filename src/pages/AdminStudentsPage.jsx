@@ -196,7 +196,7 @@ export default function AdminStudentsPage() {
 
   async function copyCredentials() {
     if (!credentials) return;
-    const text = `Email: ${credentials.email}\nTemporary password: ${credentials.password}`;
+    const text = `Email: ${credentials.email}\nPassword: ${credentials.password}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);

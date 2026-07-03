@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import gsap from "gsap";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useDirectory } from "../context/DirectoryContext.jsx";
 import PasswordInput from "../components/PasswordInput.jsx";
 import styles from "../styles/LoginPage.module.css";
 
@@ -13,6 +14,7 @@ const DASHBOARD_PATH = {
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const { branches, subjects, classes } = useDirectory();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -90,6 +92,20 @@ export default function LoginPage() {
             Track attendance, enter marks, and issue certificates — all in one
             place, built for teachers and students alike.
           </p>
+          <div className={styles.heroStats}>
+            <div>
+              <p className={styles.heroStatValue}>{branches.length}</p>
+              <p className={styles.heroStatLabel}>Branches</p>
+            </div>
+            <div>
+              <p className={styles.heroStatValue}>{subjects.length}</p>
+              <p className={styles.heroStatLabel}>Subjects</p>
+            </div>
+            <div>
+              <p className={styles.heroStatValue}>{classes.length}</p>
+              <p className={styles.heroStatLabel}>Classes</p>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -12,9 +12,11 @@ import AdminTeachersPage from "./pages/AdminTeachersPage.jsx";
 import AdminClassesPage from "./pages/AdminClassesPage.jsx";
 import AdminStudentAttendancePage from "./pages/AdminStudentAttendancePage.jsx";
 import AdminExamsPage from "./pages/AdminExamsPage.jsx";
+import AdminStructurePage from "./pages/AdminStructurePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import TeacherDashboard from "./pages/TeacherDashboard.jsx";
+import MyClasses from "./pages/MyClasses.jsx";
 import StudentDashboard from "./pages/StudentDashboard.jsx";
 import StudentsPage from "./pages/StudentsPage.jsx";
 import AttendancePage from "./pages/AttendancePage.jsx";
@@ -23,7 +25,6 @@ import CertificatesPage from "./pages/CertificatesPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import PerformancePage from "./pages/PerformancePage.jsx";
 import StructurePage from "./pages/StructurePage.jsx";
-import MyClasses from "./pages/MyClasses.jsx";
 
 function PageTransition({ children }) {
   const location = useLocation();
@@ -86,6 +87,10 @@ export default function App() {
         path="/admin/exams"
         element={<ProtectedRoute role="admin"><AppShell><AdminExamsPage /></AppShell></ProtectedRoute>}
       />
+      <Route
+        path="/admin/structure"
+        element={<ProtectedRoute role="admin"><AppShell><AdminStructurePage /></AppShell></ProtectedRoute>}
+      />
 
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
@@ -101,21 +106,21 @@ export default function App() {
         }
       />
       <Route
-        path="/teacher/profile"
+        path="/teacher/classes"
         element={
           <ProtectedRoute role="teacher">
             <AppShell>
-              <ProfilePage />
+              <MyClasses />
             </AppShell>
           </ProtectedRoute>
         }
       />
       <Route
-        path="/teacher/classes"
+        path="/teacher/profile"
         element={
           <ProtectedRoute role="teacher">
             <AppShell>
-              <MyClasses/>
+              <ProfilePage />
             </AppShell>
           </ProtectedRoute>
         }

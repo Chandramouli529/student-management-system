@@ -77,56 +77,60 @@
   padding: 6px 2px;
 }
 
-.branchHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.timetableCard {
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
 }
 
-.classTopRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.timetableGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
 }
 
-.editBtn,
-.smallEditBtn,
-.subjectEditBtn {
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.timetableDay {
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.timetableDayLabel {
+  font-size: 0.76rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-blue-700);
+  margin-bottom: var(--space-2);
 }
 
-.editBtn {
-  padding: 10px 14px;
-  background: #2563eb;
-  color: #fff;
+.timetableSession {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
 }
 
-.smallEditBtn,
-.subjectEditBtn {
-  padding: 6px 10px;
-  background: #f59e0b;
-  color: #fff;
+.timetableSession:last-child {
+  margin-bottom: 0;
 }
 
-.editBtn:hover {
-  background: #1d4ed8;
+.timetableTime {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-muted);
 }
 
-.smallEditBtn:hover,
-.subjectEditBtn:hover {
-  background: #d97706;
+.timetableSubject {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
-.emptyState {
-  padding: 24px;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
-  font-weight: 700;
-  text-align: center;
+.timetableTeacher {
+  font-size: 0.74rem;
+  color: var(--color-ink-soft);
 }

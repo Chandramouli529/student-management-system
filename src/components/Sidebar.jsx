@@ -8,7 +8,8 @@ const adminNav = [
   { to: "/admin", label: "Admin Dashboard", icon: "grid" },
   { to: "/admin/teachers", label: "Teachers", icon: "user" },
   { to: "/admin/students", label: "Students", icon: "users" },
-  { to: "/admin/classes", label: "Classes", icon: "layers" },
+  { to: "/admin/structure", label: "Structure", icon: "book" },
+  { to: "/admin/classes", label: "Timetable", icon: "layers" },
   { to: "/admin/attendance", label: "Attendance", icon: "check" },
   { to: "/admin/exams", label: "Exams", icon: "exam" },
 ];
@@ -47,6 +48,7 @@ const icons = {
   trend: <path d="M4 17 10 11 14 15 20 7M14 7h6v6" />,
   logout: <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />,
   exam: <path d="M9 2h6a1 1 0 0 1 1 1v2H8V3a1 1 0 0 1 1-1ZM6 6h12a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm2.5 6.5 2 2 4-4" />,
+  book: <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15Z" />,
 };
 
 function Icon({ name }) {

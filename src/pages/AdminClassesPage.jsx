@@ -8,6 +8,10 @@ import formStyles from "../styles/AdminClassesPage.module.css";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 function emptyForm(classes, subjects, allTeachers) {
   const firstClass = classes[0];
   const firstSubject = subjects.find((s) => s.classId === firstClass?.id) || subjects[0];
@@ -16,6 +20,7 @@ function emptyForm(classes, subjects, allTeachers) {
     subjectId: firstSubject?.id || "",
     teacherId: allTeachers[0]?.id || "",
     day: DAYS[0],
+    date: todayStr(),
     startTime: "09:00",
     endTime: "10:00",
   };
@@ -103,6 +108,7 @@ export default function AdminClassesPage() {
       subjectId: entry.subjectId,
       teacherId: entry.teacherId,
       day: entry.day,
+      date: entry.date || todayStr(),
       startTime: entry.startTime,
       endTime: entry.endTime,
     });
@@ -163,7 +169,7 @@ export default function AdminClassesPage() {
   return (
     <div>
       <TopBar
-        title="Classes"
+        title="Timetable"
         subtitle="Which class meets when, and which teacher takes it."
         actions={
           <div className={styles.toolbar}>
@@ -202,6 +208,7 @@ export default function AdminClassesPage() {
             { key: "subject", label: "Subject", render: (r) => subjects.find((s) => s.id === r.subjectId)?.name || "—" },
             { key: "teacher", label: "Teacher", render: (r) => allTeachers.find((t) => t.id === r.teacherId)?.name || "—" },
             { key: "day", label: "Day", render: (r) => <span className={formStyles.dayBadge}>{r.day}</span> },
+            { key: "date", label: "Date", render: (r) => <span className={formStyles.timeBadge}>{r.date || "—"}</span> },
             { key: "time", label: "Time", render: (r) => <span className={formStyles.timeBadge}>{r.startTime} – {r.endTime}</span> },
             {
               key: "actions",
@@ -249,11 +256,23 @@ export default function AdminClassesPage() {
             </select>
           </div>
 
-          <div className={formStyles.field}>
-            <label className={formStyles.label} htmlFor="cs-day">Day</label>
-            <select id="cs-day" className={formStyles.select} value={form.day} onChange={(e) => update("day", e.target.value)}>
-              {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
+          <div className={formStyles.row2}>
+            <div className={formStyles.field}>
+              <label className={formStyles.label} htmlFor="cs-day">Day</label>
+              <select id="cs-day" className={formStyles.select} value={form.day} onChange={(e) => update("day", e.target.value)}>
+                {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+            <div className={formStyles.field}>
+              <label className={formStyles.label} htmlFor="cs-date">Date</label>
+              <input
+                id="cs-date"
+                type="date"
+                className={formStyles.input}
+                value={form.date}
+                onChange={(e) => update("date", e.target.value)}
+              />
+            </div>
           </div>
 
           <div className={formStyles.row2}>
