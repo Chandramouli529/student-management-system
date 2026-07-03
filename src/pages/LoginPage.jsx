@@ -92,20 +92,6 @@ export default function LoginPage() {
             Track attendance, enter marks, and issue certificates — all in one
             place, built for teachers and students alike.
           </p>
-          <div className={styles.heroStats}>
-            <div>
-              <p className={styles.heroStatValue}>{branches.length}</p>
-              <p className={styles.heroStatLabel}>Branches</p>
-            </div>
-            <div>
-              <p className={styles.heroStatValue}>{subjects.length}</p>
-              <p className={styles.heroStatLabel}>Subjects</p>
-            </div>
-            <div>
-              <p className={styles.heroStatValue}>{classes.length}</p>
-              <p className={styles.heroStatLabel}>Classes</p>
-            </div>
-          </div>
         </div>
       </div>
 
