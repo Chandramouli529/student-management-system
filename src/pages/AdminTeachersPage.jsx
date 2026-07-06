@@ -305,7 +305,7 @@ export default function AdminTeachersPage() {
               <span className={formStyles.credentialValue}>{credentials.email}</span>
             </div>
             <div className={formStyles.credentialRow}>
-              <span className={formStyles.credentialLabel}>Temporary password</span>
+              <span className={formStyles.credentialLabel}>Password</span>
               <span className={formStyles.credentialValue}>{credentials.password}</span>
             </div>
 

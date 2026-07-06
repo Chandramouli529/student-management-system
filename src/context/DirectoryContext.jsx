@@ -239,6 +239,7 @@ function seedAll() {
     notifications: seedNotifications(),
     schedule: [],
     exams: [],
+    announcements: [],
   };
 }
 
@@ -260,6 +261,7 @@ function emptyDefaults() {
     notifications: { teacher: [], student: [], admin: [] },
     schedule: [],
     exams: [],
+    announcements: [],
   };
 }
 
@@ -326,6 +328,7 @@ export function DirectoryProvider({ children }) {
         id: details.id || `tch-${Date.now()}`,
         name: details.name || "New Teacher",
         email: details.email || "",
+        empId: details.empId || "",
         subjectIds: details.subjectIds || [],
         department: details.department,
         branchId: details.branchId,
@@ -377,6 +380,11 @@ export function DirectoryProvider({ children }) {
     [data, persist]
   );
 
+  const removeAttendance = useCallback(
+    (id) => persist({ ...data, attendanceRecords: data.attendanceRecords.filter((r) => r.id !== id) }),
+    [data, persist]
+  );
+
   const upsertMarks = useCallback(
     (studentId, subjectId, assessment, score) => {
       const idx = data.marksRecords.findIndex((r) => r.studentId === studentId && r.subjectId === subjectId && r.assessment === assessment);
@@ -388,12 +396,35 @@ export function DirectoryProvider({ children }) {
     [data, persist]
   );
 
+  const removeMarks = useCallback(
+    (id) => persist({ ...data, marksRecords: data.marksRecords.filter((r) => r.id !== id) }),
+    [data, persist]
+  );
+
   const addCertificate = useCallback(
     (details) => {
       const record = { id: `cert-${Date.now()}`, issuedOn: new Date().toISOString().slice(0, 10), ...details };
       persist({ ...data, certificates: [record, ...data.certificates] });
       return record;
     },
+    [data, persist]
+  );
+
+  const updateCertificate = useCallback(
+    (id, patch) => {
+      const idx = data.certificates.findIndex((c) => c.id === id);
+      if (idx === -1) return null;
+      const next = { ...data.certificates[idx], ...patch };
+      const nextCerts = [...data.certificates];
+      nextCerts[idx] = next;
+      persist({ ...data, certificates: nextCerts });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const removeCertificate = useCallback(
+    (id) => persist({ ...data, certificates: data.certificates.filter((c) => c.id !== id) }),
     [data, persist]
   );
 
@@ -462,6 +493,43 @@ export function DirectoryProvider({ children }) {
   );
 
   const removeExam = useCallback((id) => persist({ ...data, exams: (data.exams || []).filter((e) => e.id !== id) }), [data, persist]);
+
+  // ---- Announcements ----
+  // branchId of null/"" means "everyone, every branch" — the same
+  // convention used for the certificate/exam filters elsewhere.
+  const addAnnouncement = useCallback(
+    (details) => {
+      const record = {
+        id: details.id || `ann-${Date.now()}`,
+        title: details.title,
+        message: details.message || "",
+        branchId: details.branchId || null,
+        date: details.date || new Date().toISOString().slice(0, 10),
+      };
+      persist({ ...data, announcements: [record, ...(data.announcements || [])] });
+      return record;
+    },
+    [data, persist]
+  );
+
+  const updateAnnouncement = useCallback(
+    (id, patch) => {
+      const list = data.announcements || [];
+      const idx = list.findIndex((a) => a.id === id);
+      if (idx === -1) return null;
+      const next = { ...list[idx], ...patch };
+      const nextList = [...list];
+      nextList[idx] = next;
+      persist({ ...data, announcements: nextList });
+      return next;
+    },
+    [data, persist]
+  );
+
+  const removeAnnouncement = useCallback(
+    (id) => persist({ ...data, announcements: (data.announcements || []).filter((a) => a.id !== id) }),
+    [data, persist]
+  );
 
   // ---- Branches ----
   const addBranch = useCallback(
@@ -611,14 +679,21 @@ export function DirectoryProvider({ children }) {
       removeStudent,
       removeTeacher,
       upsertAttendance,
+      removeAttendance,
       upsertMarks,
+      removeMarks,
       addCertificate,
+      updateCertificate,
+      removeCertificate,
       assignSchedule,
       updateSchedule,
       removeSchedule,
       addExam,
       updateExam,
       removeExam,
+      addAnnouncement,
+      updateAnnouncement,
+      removeAnnouncement,
       addBranch,
       updateBranch,
       removeBranch,
@@ -645,14 +720,21 @@ export function DirectoryProvider({ children }) {
       removeStudent,
       removeTeacher,
       upsertAttendance,
+      removeAttendance,
       upsertMarks,
+      removeMarks,
       addCertificate,
+      updateCertificate,
+      removeCertificate,
       assignSchedule,
       updateSchedule,
       removeSchedule,
       addExam,
       updateExam,
       removeExam,
+      addAnnouncement,
+      updateAnnouncement,
+      removeAnnouncement,
       addBranch,
       updateBranch,
       removeBranch,

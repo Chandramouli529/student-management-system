@@ -31,6 +31,12 @@ function getPasswordStrength(password) {
   return { score: clamped, ...levels[clamped] };
 }
 
+// Input is sanitized to digits-only as you type (see handlePhoneChange), so
+// this is just the final safety check: exactly 10 digits, nothing else.
+function isValidPhone(phone) {
+  return /^\d{10}$/.test(phone);
+}
+
 export default function SignupPage() {
   const { signup } = useAuth();
   const navigate = useNavigate();
@@ -70,6 +76,15 @@ export default function SignupPage() {
     if (error) setError("");
   }
 
+  // Strips anything that isn't a digit and caps at 10 characters as you
+  // type — so the field itself can never end up holding letters,
+  // symbols, or more than 10 digits, rather than only catching it at
+  // submit time.
+  function handlePhoneChange(e) {
+    const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+    update("phone", digitsOnly);
+  }
+
   function shakePanel() {
     gsap.fromTo(
       panelRef.current,
@@ -84,8 +99,8 @@ export default function SignupPage() {
 
     if (!name || !email) return "Name and email are required.";
     if (!EMAIL_RE.test(email)) return "Enter a valid email address.";
-    if (form.phone && !/^[+\d][\d\s-]{7,}$/.test(form.phone.trim())) {
-      return "Enter a valid phone number.";
+    if (form.phone && !isValidPhone(form.phone.trim())) {
+      return "Enter a valid 10-digit contact number.";
     }
     if (form.password.length < 8) return "Password must be at least 8 characters.";
     if (!/[a-zA-Z]/.test(form.password) || !/\d/.test(form.password)) {
@@ -138,7 +153,7 @@ export default function SignupPage() {
             <span className={styles.logoMark}>BP</span>
             <span className={styles.logoWord}>Brightpath</span>
           </div>
-          <h1 className={styles.heroTitle}>Create your account for Admin.</h1>
+          <h1 className={styles.heroTitle}>Create your account.</h1>
           <p className={styles.heroBody}>
             Set your email and password here, then sign in with them on the
             next screen.
@@ -177,9 +192,12 @@ export default function SignupPage() {
             <input
               id="su-phone"
               className={styles.input}
+              type="tel"
+              inputMode="numeric"
+              maxLength={10}
               value={form.phone}
-              onChange={(e) => update("phone", e.target.value)}
-              placeholder="+91 90000 00000"
+              onChange={handlePhoneChange}
+              placeholder="9000012345"
               autoComplete="tel"
             />
 
@@ -229,5 +247,5 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
- );
+  );
 }
